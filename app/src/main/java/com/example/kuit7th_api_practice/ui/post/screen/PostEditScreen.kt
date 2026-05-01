@@ -48,7 +48,10 @@ fun PostEditScreen(
     onPostUpdated: () -> Unit,
     viewModel: PostViewModel
 ) {
-    val formState = viewModel.postEditFormState
+    val title = viewModel.postEditFormState.title
+    val content = viewModel.postEditFormState.content
+    val originalImageUrl = viewModel.postEditFormState.originalImageUrl
+    val selectedImageUri = viewModel.postEditFormState.selectedImageUri
     val isUploading = viewModel.isUploading
 
     LaunchedEffect(postId) {
@@ -87,7 +90,7 @@ fun PostEditScreen(
                 .padding(20.dp)
         ) {
             OutlinedTextField(
-                value = formState.title,
+                value = title,
                 onValueChange = { viewModel.updateEditTitle(it) },
                 label = { Text("제목") },
                 placeholder = { Text("제목을 입력해주세요.") },
@@ -103,7 +106,7 @@ fun PostEditScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
-                value = formState.content,
+                value = content,
                 onValueChange = { viewModel.updateEditContent(it) },
                 label = { Text("내용") },
                 placeholder = { Text("내용을 입력해주세요.") },
@@ -127,7 +130,7 @@ fun PostEditScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            val imageModel = formState.selectedImageUri ?: formState.originalImageUrl
+            val imageModel = selectedImageUri ?: originalImageUrl
 
             if (imageModel != null) {
                 Box(
@@ -185,7 +188,7 @@ fun PostEditScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                enabled = formState.title.isNotBlank() && formState.content.isNotBlank() && !isUploading,
+                enabled = title.isNotBlank() && content.isNotBlank() && !isUploading,
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(

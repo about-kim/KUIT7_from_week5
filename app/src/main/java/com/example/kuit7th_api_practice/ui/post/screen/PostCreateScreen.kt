@@ -55,7 +55,10 @@ fun PostCreateScreen(
     onPostCreated: () -> Unit,
     viewModel: PostViewModel
 ) {
-    val formState = viewModel.postCreateFormState
+    val author = viewModel.postCreateFormState.author
+    val title = viewModel.postCreateFormState.title
+    val content = viewModel.postCreateFormState.content
+    val selectedImageUri = viewModel.postCreateFormState.selectedImageUri
     val isUploading = viewModel.isUploading
 
     val imagePickerLauncher = rememberLauncherForActivityResult(
@@ -93,7 +96,7 @@ fun PostCreateScreen(
                 .padding(20.dp)
         ) {
             OutlinedTextField(
-                value = formState.author,
+                value = author,
                 onValueChange = { viewModel.updateCreateAuthor(it) },
                 label = { Text("작성자") },
                 placeholder = { Text("anonymous") },
@@ -106,7 +109,7 @@ fun PostCreateScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
-                value = formState.title,
+                value = title,
                 onValueChange = { viewModel.updateCreateTitle(it) },
                 label = { Text("제목") },
                 placeholder = { Text("제목을 입력해주세요.") },
@@ -119,7 +122,7 @@ fun PostCreateScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
-                value = formState.content,
+                value = content,
                 onValueChange = { viewModel.updateCreateContent(it) },
                 label = { Text("내용") },
                 placeholder = { Text("내용을 입력해주세요.") },
@@ -153,7 +156,7 @@ fun PostCreateScreen(
                             )
                         )
 
-                        if (formState.selectedImageUri == null && !isUploading) {
+                        if (selectedImageUri == null && !isUploading) {
                             FilledTonalButton(
                                 onClick = { imagePickerLauncher.launch("image/*") },
                                 shape = RoundedCornerShape(10.dp)
@@ -179,11 +182,11 @@ fun PostCreateScreen(
                         }
                     }
 
-                    if (formState.selectedImageUri != null && !isUploading) {
+                    if (selectedImageUri != null && !isUploading) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Box(modifier = Modifier.fillMaxWidth()) {
                             AsyncImage(
-                                model = formState.selectedImageUri,
+                                model = selectedImageUri,
                                 contentDescription = "선택한 이미지",
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -218,7 +221,7 @@ fun PostCreateScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                enabled = formState.title.isNotBlank() && formState.content.isNotBlank() && !isUploading,
+                enabled = title.isNotBlank() && content.isNotBlank() && !isUploading,
                 shape = RoundedCornerShape(16.dp),
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
             ) {
