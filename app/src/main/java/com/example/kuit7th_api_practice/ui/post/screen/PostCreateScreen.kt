@@ -42,11 +42,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.kuit7th_api_practice.ui.post.viewmodel.PostViewModel
-import com.example.kuit7th_api_practice.ui.theme.KUIT7th_API_practiceTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
