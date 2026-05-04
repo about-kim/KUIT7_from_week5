@@ -8,10 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kuit7th_api_practice.data.mock.PostLocalDataSource
 import com.example.kuit7th_api_practice.data.model.request.PostCreateRequest
-<<<<<<< HEAD
 import com.example.kuit7th_api_practice.data.repository.FavoriteRepository
-=======
->>>>>>> 2d00d38cb906b526729d7106c165368d9e80b23f
 import com.example.kuit7th_api_practice.ui.post.state.PostCreateFormState
 import com.example.kuit7th_api_practice.ui.post.state.PostDetailUiState
 import com.example.kuit7th_api_practice.ui.post.state.PostEditFormState
@@ -23,12 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostViewModel @Inject constructor(
-<<<<<<< HEAD
     private val postLocalDataSource: PostLocalDataSource,
     private val favoriteRepository: FavoriteRepository
-=======
-    private val postLocalDataSource: PostLocalDataSource
->>>>>>> 2d00d38cb906b526729d7106c165368d9e80b23f
 ) : ViewModel() {
 
     var postListUiState by mutableStateOf<PostListUiState>(PostListUiState.Loading)
@@ -53,14 +46,10 @@ class PostViewModel @Inject constructor(
             runCatching {
                 postLocalDataSource.getPosts()
             }.onSuccess { posts ->
-<<<<<<< HEAD
                 val map = favoriteRepository.getFavorite(posts)
                 map.forEach { (key, value) ->
                     posts.find { it.id == key }?.isFavorite = value
                 }
-
-=======
->>>>>>> 2d00d38cb906b526729d7106c165368d9e80b23f
                 postListUiState = PostListUiState.Success(posts)
             }.onFailure { error ->
                 postListUiState == PostListUiState.Error(
@@ -94,15 +83,12 @@ class PostViewModel @Inject constructor(
             }
         }
     }
-<<<<<<< HEAD
     fun onFavoriteClick(postId: Long) {
         viewModelScope.launch {
             favoriteRepository.setFavorite(postId)
             getPosts()
         }
     }
-=======
->>>>>>> 2d00d38cb906b526729d7106c165368d9e80b23f
 
     private fun initializeEditForm(
         postId: Long,
