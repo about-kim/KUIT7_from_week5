@@ -1,7 +1,10 @@
 ﻿package com.example.kuit7th_api_practice.ui.post.component
 
 import androidx.compose.foundation.clickable
+<<<<<<< HEAD
 import androidx.compose.foundation.layout.Arrangement
+=======
+>>>>>>> 2d00d38cb906b526729d7106c165368d9e80b23f
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,8 +16,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+<<<<<<< HEAD
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+=======
+>>>>>>> 2d00d38cb906b526729d7106c165368d9e80b23f
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -26,7 +32,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+<<<<<<< HEAD
 import androidx.compose.ui.graphics.Color
+=======
+>>>>>>> 2d00d38cb906b526729d7106c165368d9e80b23f
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -38,8 +47,12 @@ import com.example.kuit7th_api_practice.util.formatDateTime
 @Composable
 fun PostItem(
     post: PostResponse,
+<<<<<<< HEAD
     onClick: () -> Unit,
     onFavoriteClick: () -> Unit
+=======
+    onClick: () -> Unit
+>>>>>>> 2d00d38cb906b526729d7106c165368d9e80b23f
 ) {
     Card(
         modifier = Modifier
@@ -53,6 +66,7 @@ fun PostItem(
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Row(
+<<<<<<< HEAD
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -115,6 +129,52 @@ fun PostItem(
                     tint = if (post.isFavorite) Color.Red
                     else MaterialTheme.colorScheme.onPrimaryContainer
                 )
+=======
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 16.dp)
+            ) {
+                if (post.author.profileImageUrl != null) {
+                    AsyncImage(
+                        model = post.author.profileImageUrl,
+                        contentDescription = "profile",
+                        modifier = Modifier
+                            .size(44.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Surface(
+                        modifier = Modifier.size(44.dp),
+                        shape = CircleShape,
+                        color = MaterialTheme.colorScheme.primaryContainer
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = null,
+                            modifier = Modifier.padding(10.dp),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = post.author.username,
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = formatDateTime(post.createdAt),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+>>>>>>> 2d00d38cb906b526729d7106c165368d9e80b23f
             }
 
             post.imageUrl?.let { imageUrl ->

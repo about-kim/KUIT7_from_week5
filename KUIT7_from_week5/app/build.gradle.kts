@@ -74,8 +74,11 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
+<<<<<<< HEAD
     implementation("androidx.datastore:datastore-preferences:1.2.1")
 
+=======
+>>>>>>> 2d00d38cb906b526729d7106c165368d9e80b23f
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
