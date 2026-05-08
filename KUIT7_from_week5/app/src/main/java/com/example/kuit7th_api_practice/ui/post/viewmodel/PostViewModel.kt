@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kuit7th_api_practice.data.datastore.PostDraftDataStore
 import com.example.kuit7th_api_practice.data.mock.PostLocalDataSource
 import com.example.kuit7th_api_practice.data.model.request.PostCreateRequest
 import com.example.kuit7th_api_practice.data.repository.FavoriteRepository
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val postLocalDataSource: PostLocalDataSource,
-    private val favoriteRepository: FavoriteRepository
+    private val favoriteRepository: FavoriteRepository,
+    private val postDraftDataStore: PostDraftDataStore  // 6주차 미션
 ) : ViewModel() {
 
     var postListUiState by mutableStateOf<PostListUiState>(PostListUiState.Loading)
@@ -39,6 +41,31 @@ class PostViewModel @Inject constructor(
 
     var isUploading by mutableStateOf(false)
         private set
+
+    init {
+        // 6주차 미션: 앱 시작 시 저장된 임시 데이터를 불러옴
+        loadDraft()
+    }
+
+    // 6주차 미션: 저장된 임시 작성 데이터를 불러와서 폼 상태에 적용
+    private fun loadDraft() {
+        viewModelScope.launch {
+            runCatching {
+                postDraftDataStore.getDraft()
+            }.onSuccess { (author, title, content) ->
+                // 6주차 미션: 저장된 데이터가 있을 경우에만 폼 상태를 업데이트
+                if (author.isNotEmpty() || title.isNotEmpty() || content.isNotEmpty()) {
+                    postCreateFormState = PostCreateFormState(
+                        author = author,
+                        title = title,
+                        content = content
+                    )
+                }
+            }.onFailure {
+                // 6주차 미션: 에러 발생 시 무시
+            }
+        }
+    }
 
     fun getPosts() {
         viewModelScope.launch {
@@ -108,7 +135,7 @@ class PostViewModel @Inject constructor(
         )
     }
 
-    // 미션
+    // 5주차 미션
 
     fun createPost(onSuccess: () -> Unit) {
         val form = postCreateFormState
@@ -123,8 +150,20 @@ class PostViewModel @Inject constructor(
                     )
                 )
             }.onSuccess {
+                // 게시글 작성 성공 시 폼 상태와 임시 저장 데이터 모두 초기화
                 postCreateFormState = PostCreateFormState()
+                clearDraft()
                 onSuccess()
+            }.onFailure {
+            }
+        }
+    }
+
+     // 6주차 미션: 저장된 임시 데이터 삭제
+    private fun clearDraft() {
+        viewModelScope.launch {
+            runCatching {
+                postDraftDataStore.clearDraft()
             }.onFailure {
             }
         }
@@ -174,14 +213,34 @@ class PostViewModel @Inject constructor(
 
     fun updateCreateAuthor(value: String) {
         postCreateFormState = postCreateFormState.copy(author = value)
+        // 6주차 미션: 작성자가 변경될 때마다 DataStore에 저장
+        saveDraft()
     }
 
     fun updateCreateTitle(value: String) {
         postCreateFormState = postCreateFormState.copy(title = value)
+        // 6주차 미션: 제목이 변경될 때마다 DataStore에 저장
+        saveDraft()
     }
 
     fun updateCreateContent(value: String) {
         postCreateFormState = postCreateFormState.copy(content = value)
+        // 6주차 미션: 내용이 변경될 때마다 DataStore에 저장
+        saveDraft()
+    }
+
+     // 6주차 미션:현재 작성 중인 데이터를 DataStore에 저장
+    private fun saveDraft() {
+        viewModelScope.launch {
+            runCatching {
+                postDraftDataStore.saveDraft(
+                    author = postCreateFormState.author,
+                    title = postCreateFormState.title,
+                    content = postCreateFormState.content
+                )
+            }.onFailure {
+            }
+        }
     }
 
     fun updateEditTitle(value: String) {

@@ -1,12 +1,16 @@
 ﻿package com.example.kuit7th_api_practice.di
 
+import android.content.Context
+import com.example.kuit7th_api_practice.data.datastore.PostDraftDataStore
 import com.example.kuit7th_api_practice.data.mock.InMemoryMockPostDataSource
 import com.example.kuit7th_api_practice.data.mock.PostLocalDataSource
 import com.example.kuit7th_api_practice.data.repository.FavoriteRepository
 import com.example.kuit7th_api_practice.data.repositoryimpl.FavoriteRepositoryImpl
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -25,4 +29,12 @@ abstract class PostDataModule {
     abstract fun bindFavoriteRepository(
         repository: FavoriteRepositoryImpl
     ): FavoriteRepository
+
+    companion object {
+        @Provides
+        @Singleton
+        fun providePostDraftDataStore(
+            @ApplicationContext context: Context
+        ): PostDraftDataStore = PostDraftDataStore(context)
+    }
 }
